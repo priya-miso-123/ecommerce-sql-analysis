@@ -1,0 +1,84 @@
+
+erDiagram
+    CUSTOMERS ||--|| ORDERS : "customer_id"
+    ORDERS ||--|{ ORDER_ITEMS : "order_id"
+    ORDERS ||--|{ ORDER_PAYMENTS : "order_id"
+    ORDERS ||--|{ ORDER_REVIEWS : "order_id"
+    PRODUCTS ||--o{ ORDER_ITEMS : "product_id"
+    SELLERS ||--o{ ORDER_ITEMS : "seller_id"
+    CATEGORY_TRANSLATION ||--o{ PRODUCTS : "category_name"
+
+    CUSTOMERS }o--o{ GEOLOCATION : "zip_code_prefix"
+    SELLERS }o--o{ GEOLOCATION : "zip_code_prefix"
+
+    CUSTOMERS {
+        varchar customer_id PK
+        varchar customer_unique_id
+        varchar customer_zip_code_prefix FK
+        varchar customer_city
+        varchar customer_state
+    }
+
+    ORDERS {
+        varchar order_id PK
+        varchar customer_id FK
+        varchar order_status
+        timestamp order_purchase_timestamp
+        timestamp order_approved_at
+        timestamp order_delivered_carrier_date
+        timestamp order_delivered_customer_date
+        timestamp order_estimated_delivery_date
+    }
+
+    ORDER_ITEMS {
+        varchar order_id PK, FK
+        integer order_item_id PK
+        varchar product_id FK
+        varchar seller_id FK
+        numeric price
+        numeric freight_value
+    }
+
+    ORDER_PAYMENTS {
+        varchar order_id PK, FK
+        integer payment_sequential PK
+        varchar payment_type
+        integer payment_installments
+        numeric payment_value
+    }
+
+    ORDER_REVIEWS {
+        varchar review_id
+        varchar order_id FK
+        integer review_score
+        timestamp review_creation_date
+        timestamp review_answer_timestamp
+    }
+
+    PRODUCTS {
+        varchar product_id PK
+        varchar product_category_name FK
+        integer product_name_lenght
+        integer product_description_lenght
+        numeric product_weight_g
+    }
+
+    SELLERS {
+        varchar seller_id PK
+        varchar seller_zip_code_prefix FK
+        varchar seller_city
+        varchar seller_state
+    }
+
+    CATEGORY_TRANSLATION {
+        varchar product_category_name PK
+        varchar product_category_name_english
+    }
+
+    GEOLOCATION {
+        varchar geolocation_zip_code_prefix
+        numeric geolocation_lat
+        numeric geolocation_lng
+        varchar geolocation_city
+        varchar geolocation_state
+    }
